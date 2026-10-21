@@ -76,19 +76,6 @@ footer{padding:28px max(5vw,20px);border-top:1px solid #ffffff18;color:var(--mut
   <a id="preview-download" href="#" download style="margin-top:20px;padding:14px 22px;background:#00e5ff;color:#001016;border-radius:8px;text-decoration:none;font-weight:bold;">Télécharger gratuitement</a>
 </div>
 <script>
-document.querySelectorAll('.art').forEach(function(card) {
-  card.style.cursor = 'pointer';
-  card.addEventListener('click', function() {
-    var bg = card.style.backgroundImage;
-    var match = bg.match(/url\(["']?(.*?)["']?\)/);
-    if (!match) return;
-    var url = match[1];
-    var preview = document.getElementById('image-preview');
-    document.getElementById('preview-image').src = url;
-    document.getElementById('preview-download').href = url;
-    preview.style.display = 'flex';
-  });
-});
 document.getElementById('image-preview').addEventListener('click', function(e) {
   if (e.target === this) this.style.display = 'none';
 });
