@@ -78,27 +78,6 @@ footer{padding:28px max(5vw,20px);border-top:1px solid #ffffff18;color:var(--mut
   <a id="preview-download" href="#" download style="margin-top:20px;padding:14px 22px;background:#00e5ff;color:#001016;border-radius:8px;text-decoration:none;font-weight:bold;">Télécharger gratuitement</a>
 </div>
 <script>
-document.getElementById('image-preview').addEventListener('click', function(e) {
-  if (e.target === this) this.style.display = 'none';
-});
-
-const searchInput = document.getElementById('wallpaper-search');
-const searchMessage = document.getElementById('search-message');
-
-searchInput.addEventListener('input', function () {
-  const query = this.value.trim().toLowerCase();
-  const cards = document.querySelectorAll('.card');
-  let visibleCount = 0;
-
-  cards.forEach(function (card) {
-    const matches = card.textContent.toLowerCase().includes(query);
-    card.style.display = matches ? '' : 'none';
-    if (matches) visibleCount++;
-  });
-
-  searchMessage.textContent = query
-    ? (visibleCount + ' fond(s) d’écran trouvé(s)')
-    : '';
-});
+document.getElementById('image-preview').addEventListener('click', function(e) {if (e.target === this) this.style.display = 'none';});const searchInput = document.getElementById('wallpaper-search');const searchMessage = document.getElementById('search-message');searchInput.addEventListener('input', function () {const query = this.value.trim().toLowerCase();const cards = document.querySelectorAll('.card');let visibleCount = 0;cards.forEach(function (card) {const matches = card.textContent.toLowerCase().includes(query);card.style.display = matches ? '' : 'none';if (matches) visibleCount++;});searchMessage.textContent = query? (visibleCount + ' fond(s) d’écran trouvé(s)'): '';});
 </script>
 </body></html>
