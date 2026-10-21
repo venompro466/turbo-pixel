@@ -51,4 +51,27 @@ footer{padding:28px max(5vw,20px);border-top:1px solid #ffffff18;color:var(--mut
 <section id="contact"><h2>Contact</h2><p class="sub">Ajoute une adresse de contact dédiée uniquement lorsque tu es prêt à publier. N’affiche pas ton adresse personnelle ni tes informations privées.</p></section>
 </main>
 <footer><strong>TURBO PIXEL</strong> — maquette de boutique numérique.<br>Les marques et modèles automobiles peuvent être protégés. Cette maquette n’est pas affiliée à des constructeurs. Vérifie les droits d’utilisation avant toute mise en vente. Aucun paiement n’est collecté sur cette page.</footer>
+  <div id="image-preview" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column;padding:20px;">
+  <button onclick="document.getElementById('image-preview').style.display='none'" style="position:absolute;top:20px;right:20px;font-size:28px;background:none;color:white;border:0;cursor:pointer;">✕</button>
+  <img id="preview-image" src="" alt="Aperçu du fond d'écran" style="max-width:90%;max-height:75vh;object-fit:contain;">
+  <a id="preview-download" href="#" download style="margin-top:20px;padding:14px 22px;background:#00e5ff;color:#001016;border-radius:8px;text-decoration:none;font-weight:bold;">Télécharger gratuitement</a>
+</div>
+<script>
+document.querySelectorAll('.art').forEach(function(card) {
+  card.style.cursor = 'pointer';
+  card.addEventListener('click', function() {
+    var bg = card.style.backgroundImage;
+    var match = bg.match(/url\(["']?(.*?)["']?\)/);
+    if (!match) return;
+    var url = match[1];
+    var preview = document.getElementById('image-preview');
+    document.getElementById('preview-image').src = url;
+    document.getElementById('preview-download').href = url;
+    preview.style.display = 'flex';
+  });
+});
+document.getElementById('image-preview').addEventListener('click', function(e) {
+  if (e.target === this) this.style.display = 'none';
+});
+</script>
 </body></html>
