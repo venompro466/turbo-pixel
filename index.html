@@ -6,12 +6,25 @@
 <meta name="description" content="Turbo Pixel — fonds d'écran automobiles originaux pour téléphone et PC.">
 <title>Turbo Pixel — Fonds d'écran automobiles</title>
 <style>
+/* Turbo Pixel - Neon rouge autour des images */
+.card .art {
+  border: 2px solid #ff173d;
+  border-radius: 12px;
+  box-shadow:
+    0 0 5px #ff173d,
+    0 0 12px rgba(255, 23, 61, 0.8),
+    0 0 24px rgba(255, 0, 40, 0.45);
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    filter 0.3s ease;}
+/* Le néon devient plus puissant au survol */.card:hover .art {border-color: #ff4965;box-shadow:
+    0 0 8px #ff173d,
+    0 0 20px #ff173d,
+    0 0 38px rgba(255, 0, 40, 0.8);filter: brightness(1.08);}
 /* ===== TURBO PIXEL : NEON UPGRADE ===== */
-
 html {
-  scroll-behavior: smooth;
-}
-
+  scroll-behavior: smooth;}
 body {
   background:
     radial-gradient(ellipse at top, #101b38 0%, #070914 48%, #03040a 100%);
@@ -22,14 +35,10 @@ body {
 h1, h2 {
   text-shadow:
     0 0 8px rgba(0, 229, 255, 0.75),
-    0 0 22px rgba(0, 120, 255, 0.35);
-}
-
+    0 0 22px rgba(0, 120, 255, 0.35);}
 h2 {
   border-bottom: 1px solid rgba(0, 229, 255, 0.35);
-  padding-bottom: 10px;
-}
-
+  padding-bottom: 10px;}
 /* Cartes de voitures */
 .card {
   border: 1px solid rgba(0, 229, 255, 0.25);
@@ -40,89 +49,59 @@ h2 {
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease,
-    border-color 0.3s ease;
-}
-
+    border-color 0.3s ease;}
 .card:hover {
   transform: translateY(-6px);
   border-color: #00e5ff;
   box-shadow:
     0 0 10px rgba(0, 229, 255, 0.55),
-    0 0 28px rgba(0, 229, 255, 0.18);
-}
-
+    0 0 28px rgba(0, 229, 255, 0.18);}
 /* Images : léger zoom au survol */
 .card .art {
-  transition: transform 0.4s ease, filter 0.4s ease;
-}
-
+  transition: transform 0.4s ease, filter 0.4s ease;}
 .card:hover .art {
-  filter: brightness(1.12) saturate(1.15);
-}
-
+  filter: brightness(1.12) saturate(1.15);}
 /* Boutons lumineux */
 button, .btn {
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
+    background 0.2s ease;}
 button:hover, .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 14px rgba(0, 229, 255, 0.45);
-}
-
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.45);}
 /* Barre de recherche */
 #wallpaper-search {
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;}
 #wallpaper-search:focus {
   outline: none;
   border-color: #00e5ff !important;
   box-shadow:
     0 0 8px rgba(0, 229, 255, 0.5),
-    0 0 20px rgba(0, 229, 255, 0.15);
-}
-
+    0 0 20px rgba(0, 229, 255, 0.15);}
 /* Navigation */
 nav a {
-  transition: color 0.2s ease, text-shadow 0.2s ease;
-}
-
+  transition: color 0.2s ease, text-shadow 0.2s ease;}
 nav a:hover {
   color: #00e5ff;
-  text-shadow: 0 0 10px rgba(0, 229, 255, 0.8);
-}
-
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.8);}
 /* Animation douce à l'apparition */
 @keyframes neon-appear {
   from {
     opacity: 0;
-    transform: translateY(12px);
-  }
+    transform: translateY(12px);}
   to {
     opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+    transform: translateY(0);}}
 .card {
-  animation: neon-appear 0.5s ease both;
-}
-
+  animation: neon-appear 0.5s ease both;}
 /* Respecte les préférences d'accessibilité */
 @media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: auto;
-  }
-
+    scroll-behavior: auto; }
   *, *::before, *::after {
     animation: none !important;
-    transition: none !important;
-  }
-}
+    transition: none !important;}}
 :root{--bg:#05090e;--panel:#0b121a;--text:#f4f7fb;--muted:#aab7c5;--cyan:#00d9f5;--pink:#ff3e75;--line:#173243}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
 header{padding:18px max(5vw,20px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff18;gap:18px;flex-wrap:wrap;background:#03070bdc}
