@@ -70,6 +70,63 @@ footer{padding:28px max(5vw,20px);border-top:1px solid #ffffff18;color:var(--mut
   <a id="preview-download" href="#" download style="margin-top:20px;padding:14px 22px;background:#00e5ff;color:#001016;border-radius:8px;text-decoration:none;font-weight:bold;">Télécharger gratuitement</a>
 </div>
 <script>
-document.getElementById('image-preview').addEventListener('click', function(e) {if (e.target === this) this.style.display = 'none';});const searchInput = document.getElementById('wallpaper-search');const searchMessage = document.getElementById('search-message');searchInput.addEventListener('input', function () {const query = this.value.trim().toLowerCase();const cards = document.querySelectorAll('.card');let visibleCount = 0;cards.forEach(function (card) {const matches = card.textContent.toLowerCase().includes(query);card.style.display = matches ? '' : 'none';if (matches) visibleCount++;});searchMessage.textContent = query? (visibleCount + ' fond(s) d’écran trouvé(s)'): '';});
+
+document.querySelectorAll('.art').forEach(function (art) {
+  art.style.cursor = 'pointer';
+
+  art.addEventListener('click', function () {
+    const preview = document.getElementById('image-preview');
+    const previewImage = document.getElementById('preview-image');
+    const previewDownload = document.getElementById('preview-download');
+
+    const background = window.getComputedStyle(art).backgroundImage;
+    const match = background.match(/^url\(["']?(.*?)["']?\)$/);
+
+    if (!match) {
+      return;
+    }
+
+    const imageUrl = match[1];
+
+    previewImage.src = imageUrl;
+    preview.style.display = 'flex';
+    previewDownload.href = imageUrl;
+    previewDownload.download = imageUrl.split('/').pop();
+  });
+});
+
+document.getElementById('image-preview').addEventListener('click', function (event) {
+  if (
+    event.target === this ||
+    event.target.closest('button')
+  ) {
+    this.style.display = 'none';
+  }
+});
+
+const searchInput = document.getElementById('wallpaper-search');
+const searchMessage = document.getElementById('search-message');
+
+if (searchInput && searchMessage) {
+  searchInput.addEventListener('input', function () {
+    const query = this.value.trim().toLowerCase();
+    const cards = document.querySelectorAll('.card');
+    let visibleCount = 0;
+
+    cards.forEach(function (card) {
+      const matches = card.textContent.toLowerCase().includes(query);
+      card.style.display = matches ? '' : 'none';
+
+      if (matches) {
+        visibleCount++;
+      }
+    });
+
+    searchMessage.textContent = query
+      ? visibleCount + ' fond(s) d’écran trouvé(s)'
+      : '';
+  });
+}
+
 </script>
 </body></html>
