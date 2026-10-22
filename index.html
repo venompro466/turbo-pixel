@@ -6,6 +6,53 @@
 <meta name="description" content="Turbo Pixel — fonds d'écran automobiles originaux pour téléphone et PC.">
 <title>Turbo Pixel — Fonds d'écran automobiles</title>
 <style>
+/* Bouton favori sur chaque fond d'écran */
+.favorite-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 8px 4px;
+  padding: 9px 13px;
+  border: 1px solid #ff173d;
+  border-radius: 8px;
+  background: #16070b;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 7px rgba(255, 23, 61, 0.4);}
+.favorite-btn.is-favorite {
+  background: #ff173d;
+  color: white;
+  box-shadow: 0 0 12px #ff173d;}
+.favorite-btn:hover {
+  box-shadow: 0 0 16px #ff173d;}
+/* Section Mes favoris */
+#my-favorites {
+  margin: 30px auto;
+  padding: 20px;
+  border: 2px solid #ff173d;
+  border-radius: 14px;
+  background: #10060a;
+  color: white;
+  box-shadow: 0 0 14px rgba(255, 23, 61, 0.4);}
+#my-favorites h2 {
+  color: #ff4965;
+  text-shadow: 0 0 8px #ff173d;}
+.favorite-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  border-bottom: 1px solid #51202b;}
+.favorite-entry button {
+  padding: 8px 12px;
+  border: 1px solid #ff173d;
+  border-radius: 7px;
+  background: #18050a;
+  color: #ff4965;
+  cursor: pointer;}
 .music-player {display: flex;align-items: center;justify-content: center;flex-wrap: wrap;gap: 14px;margin: 25px auto;padding: 18px;max-width: 650px;background: #10060a;border: 2px solid #ff173d;border-radius: 14px;box-shadow: 0 0 8px #ff173d, 0 0 20px rgba(255, 23, 61, 0.55);color: white;}.music-title {color: #ff4965;font-weight: bold;text-shadow: 0 0 8px #ff173d;letter-spacing: 1px;}#music-toggle {background: #18050a;color: #ff4965;border: 1px solid #ff173d;border-radius: 8px;padding: 10px 16px;cursor: pointer;box-shadow: 0 0 8px rgba(255, 23, 61, 0.6);}#music-toggle:hover {background: #ff173d;color: white;box-shadow: 0 0 16px #ff173d;}#music-volume {accent-color: #ff173d;width: 110px;}
 /* Turbo Pixel - Neon rouge autour des images */
 .card .art {
@@ -171,6 +218,117 @@ footer{padding:28px max(5vw,20px);border-top:1px solid #ffffff18;color:var(--mut
   <a id="preview-download" href="#" download style="margin-top:20px;padding:14px 22px;background:#00e5ff;color:#001016;border-radius:8px;text-decoration:none;font-weight:bold;">Télécharger gratuitement</a>
 </div>
 <script>
+(() => {
+  const storageKey = "turboPixelFavorites";
+  const cards = Array.from(document.querySelectorAll(".card"));
+  if (!cards.length) return;
+  let favorites = [];
+  try {
+    favorites = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    if (!Array.isArray(favorites)) favorites = [];
+  } catch {
+    favorites = [];
+  }
+  const musicPlayer = document.querySelector(".music-player");
+  const section = document.createElement("section");
+  section.id = "my-favorites";
+  section.innerHTML = `
+    <h2>❤️ Mes favoris</h2>
+    <p id="favorites-empty">Tes fonds d’écran préférés apparaîtront ici.</p>
+    <div id="favorites-list"></div>
+  `;
+  if (musicPlayer) {
+    musicPlayer.insertAdjacentElement("afterend", section);
+  } else {
+    cards[0].parentElement.before(section);
+  }
+  const list = section.querySelector("#favorites-list");
+  const emptyMessage = section.querySelector("#favorites-empty");
+  function getTitle(card) {
+    const heading = card.querySelector("h2, h3, h4");
+    if (heading) return heading.textContent.trim();
+    const image = card.querySelector("img");
+    if (image?.alt) return image.alt;
+    return "Fond d’écran Turbo Pixel";
+  }
+  function getImage(card) {
+    const image = card.querySelector(".art img, img");
+    if (image?.src) return image.src;
+
+    const art = card.querySelector(".art");
+    const background = art
+      ? getComputedStyle(art).backgroundImage
+      : "";
+    const match = background.match(/url\(["']?(.*?)["']?\)/);
+    return match ? match[1] : "";
+  }
+  function saveFavorites() {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(favorites));
+    } catch (error) {
+      console.warn("Impossible d'enregistrer les favoris.", error);
+    }
+  }
+  function renderFavorites() {
+    list.replaceChildren();
+    emptyMessage.hidden = favorites.length > 0;
+    cards.forEach((card, index) => {
+      const id = String(index);
+      const isFavorite = favorites.includes(id);
+      let button = card.querySelector(".favorite-btn");
+      if (!button) {
+        button = document.createElement("button");
+        button.type = "button";
+        button.className = "favorite-btn";
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          const position = favorites.indexOf(id);
+          if (position >= 0) {
+            favorites.splice(position, 1);
+          } else {
+            favorites.push(id);
+          }
+          saveFavorites();
+          renderFavorites();
+        });
+        card.append(button);
+      }
+      button.classList.toggle("is-favorite", isFavorite);
+      button.setAttribute("aria-pressed", String(isFavorite));
+      button.textContent = isFavorite
+        ? "❤️ Dans mes favoris"
+        : "♡ Ajouter aux favoris";
+      if (!isFavorite) return;
+      const entry = document.createElement("div");
+      entry.className = "favorite-entry";
+      const title = document.createElement("span");
+      title.textContent = getTitle(card);
+      entry.append(title);
+      const imageUrl = getImage(card);
+      if (imageUrl) {
+        const thumbnail = document.createElement("img");
+        thumbnail.src = imageUrl;
+        thumbnail.alt = "";
+        thumbnail.loading = "lazy";
+        thumbnail.style.width = "76px";
+        thumbnail.style.height = "54px";
+        thumbnail.style.objectFit = "cover";
+        thumbnail.style.borderRadius = "6px";
+        entry.prepend(thumbnail);}
+      const viewButton = document.createElement("button");
+      viewButton.type = "button";
+      viewButton.textContent = "Voir le fond d’écran";
+      viewButton.addEventListener("click", () => {
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+      entry.append(viewButton);
+
+      list.append(entry);
+    });
+  }
+  renderFavorites();})();
+
 const music = document.getElementById("background-music");
 const musicToggle = document.getElementById("music-toggle");
 const musicVolume = document.getElementById("music-volume");
